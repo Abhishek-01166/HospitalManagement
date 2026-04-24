@@ -1,0 +1,26 @@
+@model HospitalManagement.Models.Patient
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+<h1 class="mb-3">Patient Details</h1>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <strong>@Model.FirstName @Model.LastName</strong> (@Model.PatientCode)
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6"><strong>Age:</strong> @Model.Age</div>
+            <div class="col-md-6"><strong>Gender:</strong> @Model.Gender</div>
+            <div class="col-md-6"><strong>Phone:</strong> @Model.PhoneNumber</div>
+            <div class="col-md-6"><strong>Email:</strong> @(Model.Email ?? "-")</div>
+            <div class="col-md-6"><strong>Last Visit:</strong> @Model.LastVisitDate.ToLocalTime().ToString("yyyy-MM-dd")</div>
+            <div class="col-md-6"><strong>Address:</strong> @(Model.Address ?? "-")</div>
+        </div>
+    </div>
+    <div class="card-footer bg-white d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>

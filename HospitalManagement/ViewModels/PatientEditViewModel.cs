@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HospitalManagement.Models;
+namespace HospitalManagement.ViewModels;
 
-public class Patient
+public class PatientEditViewModel
 {
     public int Id { get; set; }
 
@@ -15,7 +15,7 @@ public class Patient
     [Required, MaxLength(50)]
     public string LastName { get; set; } = string.Empty;
 
-    [Range(0, 130)]
+    [Required, Range(0, 130)]
     public int Age { get; set; }
 
     [Required, MaxLength(20)]
@@ -30,9 +30,6 @@ public class Patient
     [MaxLength(200)]
     public string? Address { get; set; }
 
-    public DateTime LastVisitDate { get; set; } = DateTime.UtcNow;
-
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    [DataType(DataType.Date)]
+    public DateTime? LastVisitDate { get; set; }
 }

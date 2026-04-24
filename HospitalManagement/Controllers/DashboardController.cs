@@ -21,6 +21,7 @@ public class DashboardController(ApplicationDbContext dbContext) : Controller
             PatientsVisitedToday = await dbContext.Patients.CountAsync(p => p.LastVisitDate.Date == today),
             PatientsVisitedThisWeek = await dbContext.Patients.CountAsync(p => p.LastVisitDate.Date >= weekStart && p.LastVisitDate.Date <= today),
             RecentPatientCount = await dbContext.Patients.CountAsync(p => p.LastVisitDate.Date >= recentStart),
+            TotalUsers = await dbContext.AppUsers.CountAsync(u => u.IsActive),
             RecentVisits = await dbContext.Patients
                 .OrderByDescending(p => p.LastVisitDate)
                 .Take(5)

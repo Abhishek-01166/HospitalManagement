@@ -5,7 +5,7 @@
 <h1 class="mb-4">Main Menu</h1>
 
 <div class="row g-3">
-    <div class="col-md-4">
+    <div class="col-md-6 col-xl-4">
         <div class="card shadow-sm h-100">
             <div class="card-body d-flex flex-column">
                 <h2 class="h5">Dashboard</h2>
@@ -14,12 +14,21 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6 col-xl-4">
         <div class="card shadow-sm h-100">
             <div class="card-body d-flex flex-column">
-                <h2 class="h5">Patient Search</h2>
-                <p class="text-muted">Search patients by code, name, phone number, or email.</p>
-                <a asp-controller="Patient" asp-action="Search" class="btn btn-primary mt-auto">Search Patients</a>
+                <h2 class="h5">Patients</h2>
+                <p class="text-muted">Manage patient records with create, update, details and delete actions.</p>
+                <a asp-controller="Patient" asp-action="Index" class="btn btn-primary mt-auto">Open Patients</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column">
+                <h2 class="h5">Users</h2>
+                <p class="text-muted">Create and manage system users and roles.</p>
+                <a asp-controller="User" asp-action="Index" class="btn btn-primary mt-auto">Manage Users</a>
             </div>
         </div>
     </div>

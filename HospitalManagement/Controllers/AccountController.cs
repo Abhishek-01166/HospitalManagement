@@ -1,18 +1,18 @@
 using System.Security.Claims;
+using HospitalManagement.Data;
+using HospitalManagement.Models;
 using HospitalManagement.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalManagement.Controllers;
 
-public class AccountController : Controller
+public class AccountController(ApplicationDbContext dbContext, IPasswordHasher<AppUser> passwordHasher) : Controller
 {
-    private const string DemoUsername = "admin";
-    private const string DemoPassword = "Admin@123";
-    private const string DemoEmail = "admin@hospital.local";
-
     [AllowAnonymous]
     [HttpGet]
     public IActionResult Login(string? returnUrl = null)
@@ -38,11 +38,19 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var isValidUser = (string.Equals(model.UsernameOrEmail, DemoUsername, StringComparison.OrdinalIgnoreCase)
-                           || string.Equals(model.UsernameOrEmail, DemoEmail, StringComparison.OrdinalIgnoreCase))
-                          && model.Password == DemoPassword;
+        var usernameOrEmail = model.UsernameOrEmail.Trim();
+        var user = await dbContext.AppUsers.FirstOrDefaultAsync(u =>
+            u.IsActive &&
+            (u.Username == usernameOrEmail || (u.Email != null && u.Email == usernameOrEmail)));
 
-        if (!isValidUser)
+        if (user is null)
+        {
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(model);
+        }
+
+        var verificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
+        if (verificationResult == PasswordVerificationResult.Failed)
         {
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
@@ -50,9 +58,9 @@ public class AccountController : Controller
 
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, DemoUsername),
-            new(ClaimTypes.Email, DemoEmail),
-            new(ClaimTypes.Role, "Admin")
+            new(ClaimTypes.Name, user.Username),
+            new(ClaimTypes.Email, user.Email ?? string.Empty),
+            new(ClaimTypes.Role, user.Role)
         };
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

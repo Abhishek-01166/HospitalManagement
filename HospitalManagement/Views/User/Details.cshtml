@@ -1,0 +1,21 @@
+@model HospitalManagement.Models.AppUser
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1 class="mb-3">User Details</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body row g-3">
+        <div class="col-md-6"><strong>Username:</strong> @Model.Username</div>
+        <div class="col-md-6"><strong>Full Name:</strong> @Model.FullName</div>
+        <div class="col-md-6"><strong>Email:</strong> @Model.Email</div>
+        <div class="col-md-6"><strong>Phone:</strong> @Model.PhoneNumber</div>
+        <div class="col-md-6"><strong>Role:</strong> @Model.Role</div>
+        <div class="col-md-6"><strong>Status:</strong> @(Model.IsActive ? "Active" : "Inactive")</div>
+    </div>
+    <div class="card-footer bg-white d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>
