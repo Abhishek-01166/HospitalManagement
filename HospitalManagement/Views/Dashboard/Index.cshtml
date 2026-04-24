@@ -3,81 +3,89 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h1 class="mb-4">Dashboard</h1>
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <h1 class="mb-0">Dashboard</h1>
+    <div class="d-flex gap-2">
+        <a asp-controller="Patient" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus"></i> Add New Patient</a>
+        <a asp-controller="Patient" asp-action="Search" class="btn btn-outline-primary"><i class="bi bi-search"></i> Search Patients</a>
+        <a asp-controller="User" asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-people"></i> Manage Users</a>
+    </div>
+</div>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-primary text-white">
+    <div class="col-md-6 col-xl-3">
+        <div class="card dashboard-card border-0 bg-primary text-white">
             <div class="card-body">
                 <h2 class="h6">Total Patients</h2>
                 <p class="display-6 mb-0">@Model.TotalPatients</p>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-success text-white">
+    <div class="col-md-6 col-xl-3">
+        <div class="card dashboard-card border-0 bg-success text-white">
             <div class="card-body">
                 <h2 class="h6">Visited Today</h2>
                 <p class="display-6 mb-0">@Model.PatientsVisitedToday</p>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-info text-white">
+    <div class="col-md-6 col-xl-3">
+        <div class="card dashboard-card border-0 bg-info text-white">
             <div class="card-body">
                 <h2 class="h6">Visited This Week</h2>
                 <p class="display-6 mb-0">@Model.PatientsVisitedThisWeek</p>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-dark text-white">
+    <div class="col-md-6 col-xl-3">
+        <div class="card dashboard-card border-0 bg-dark text-white">
             <div class="card-body">
-                <h2 class="h6">Recent (30 Days)</h2>
-                <p class="display-6 mb-0">@Model.RecentPatientCount</p>
+                <h2 class="h6">Total Users</h2>
+                <p class="display-6 mb-0">@Model.TotalUsers</p>
             </div>
         </div>
     </div>
 </div>
 
 <div class="card shadow-sm">
-    <div class="card-header">5 Most Recent Patient Visits</div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-striped mb-0">
-                <thead>
-                    <tr>
-                        <th>Patient Code</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Phone</th>
-                        <th>Last Visit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @if (Model.RecentVisits.Any())
-                {
-                    @foreach (var patient in Model.RecentVisits)
-                    {
-                        <tr>
-                            <td>@patient.PatientCode</td>
-                            <td>@patient.FirstName @patient.LastName</td>
-                            <td>@patient.Age</td>
-                            <td>@patient.Gender</td>
-                            <td>@patient.PhoneNumber</td>
-                            <td>@patient.LastVisitDate.ToLocalTime().ToString("yyyy-MM-dd")</td>
-                        </tr>
-                    }
-                }
-                else
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <strong>5 Most Recent Patient Visits</strong>
+        <span class="badge text-bg-light">Last 30 days: @Model.RecentPatientCount</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Patient Code</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Last Visit</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.RecentVisits.Any())
+            {
+                @foreach (var patient in Model.RecentVisits)
                 {
                     <tr>
-                        <td colspan="6" class="text-center py-3">No patient visits found.</td>
+                        <td>@patient.PatientCode</td>
+                        <td>@patient.FirstName @patient.LastName</td>
+                        <td>@patient.Age</td>
+                        <td>@patient.Gender</td>
+                        <td>@patient.PhoneNumber</td>
+                        <td>@patient.LastVisitDate.ToLocalTime().ToString("yyyy-MM-dd")</td>
                     </tr>
                 }
-                </tbody>
-            </table>
-        </div>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center py-3">No patient visits found.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>
